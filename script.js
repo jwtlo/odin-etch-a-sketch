@@ -2,20 +2,31 @@
 
 const GRID_WIDTH = 800;
 const gridContainer = document.querySelector(".grid-container");
-const btn = document.querySelector("button");
-btn.addEventListener("click", () => {
-  const num = popup();
-  if (num === 0) return;
+const [gridSizeBtn, resetBtn] = document.querySelectorAll("button");
+let gridSize = 0;
 
-  const sideLength = Math.floor(GRID_WIDTH/num);
-  const sideLengthRem = GRID_WIDTH % num;
+gridSizeBtn.addEventListener("click", () => {
+  gridSize = popup();
+  if (gridSize === 0) return;
+
+  const sideLength = Math.floor(GRID_WIDTH/gridSize);
+  const sideLengthRem = GRID_WIDTH % gridSize;
 
   gridContainer.replaceChildren();
-  for (let i = 0; i < num * num; i++) {
+  for (let i = 0; i < gridSize * gridSize; i++) {
     const gridSquare = createGridSquare(sideLength);
     gridContainer.append(gridSquare);
   }
-})
+});
+
+resetBtn.addEventListener("click", () => {
+  if (gridSize === 0) return;
+  
+  const gridSquares = gridContainer.childNodes;
+  gridSquares.forEach((sqr) => {
+    sqr.classList.remove("hovered");
+  });
+});
 
 // Handles getting user input for number of squares. 
 // Returns 0 representing user pressing the cancel button, or 1-100 inclusive.
@@ -35,7 +46,7 @@ function createGridSquare(sideLength) {
   gridSquare.className = "grid-square";
   gridSquare.style.cssText = "width: " + sideLength + "px; height: " + sideLength + "px;";
   gridSquare.addEventListener("mouseover", () => {
-    gridSquare.className += " hover";
+    gridSquare.classList.add("hovered");
   });
 
   return gridSquare;
