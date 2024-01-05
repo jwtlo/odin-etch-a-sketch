@@ -9,20 +9,20 @@ gridSizeBtn.addEventListener("click", () => {
   gridSize = popup();
   if (gridSize === 0) return;
 
-  const sideLength = Math.floor(GRID_WIDTH/gridSize);
-  const sideLengthRem = GRID_WIDTH % gridSize;
+  // const sideLength = Math.floor(GRID_WIDTH/gridSize);
+  const sideLength = GRID_WIDTH/gridSize;
 
   gridContainer.replaceChildren();
-  for (let i = 0; i < gridSize * gridSize; i++) {
-    const gridSquare = createGridSquare(sideLength);
-    gridContainer.append(gridSquare);
+  for (let i = 0; i < gridSize; i++) {
+    const gridRow = createGridRow(gridSize, sideLength);
+    gridContainer.append(gridRow);
   }
 });
 
 resetBtn.addEventListener("click", () => {
   if (gridSize === 0) return;
   
-  const gridSquares = gridContainer.childNodes;
+  const gridSquares = document.querySelectorAll(".grid-square");
   gridSquares.forEach((sqr) => {
     sqr.classList.remove("hovered");
   });
@@ -38,6 +38,18 @@ function popup() {
     if (input === null) return 0;
   }
   return +input;
+}
+
+// Returns grid row
+function createGridRow(rowSize, sideLength) {
+  const gridRow = document.createElement("div");
+  gridRow.className = "grid-row";
+  for (let i = 0; i < rowSize; i++) {
+    const gridSquare = createGridSquare(sideLength);
+    gridRow.append(gridSquare);
+  }
+
+  return gridRow;
 }
 
 // Returns grid square
