@@ -6,15 +6,13 @@ const btn = document.querySelector("button");
 btn.addEventListener("click", () => {
   const num = popup();
   if (num === 0) return;
-  
-  const sqrWidth = Math.floor(GRID_WIDTH / num);
-  const sqrWidthRem = GRID_WIDTH % num;
-  
+
+  const sideLength = Math.floor(GRID_WIDTH/num);
+  const sideLengthRem = GRID_WIDTH % num;
+
   gridContainer.replaceChildren();
   for (let i = 0; i < num * num; i++) {
-    const gridSquare = document.createElement("div");
-    gridSquare.className = "grid-square";
-    gridSquare.style.cssText = "width: " + sqrWidth + "px; height: " + sqrWidth + "px;";
+    const gridSquare = createGridSquare(sideLength);
     gridContainer.append(gridSquare);
   }
 })
@@ -31,3 +29,14 @@ function popup() {
   return +input;
 }
 
+// Returns grid square
+function createGridSquare(sideLength) {
+  const gridSquare = document.createElement("div");
+  gridSquare.className = "grid-square";
+  gridSquare.style.cssText = "width: " + sideLength + "px; height: " + sideLength + "px;";
+  gridSquare.addEventListener("mouseover", () => {
+    gridSquare.className += " hover";
+  });
+
+  return gridSquare;
+}
